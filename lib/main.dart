@@ -38,7 +38,7 @@ class HomePageState extends State<HomePage> {
   final guessedNumber = TextEditingController();
 
   static Random ran = Random();
-  int randomNumber = ran.nextInt(100) + 1;
+  int randomNumber = ran.nextInt(99) + 1;
 
   @override
   Widget build(BuildContext context) {
