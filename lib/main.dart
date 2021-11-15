@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(const MyApp());
 
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String name = 'Guess The Number';
+    const String name = 'Guess The Number';
     return MaterialApp(
       title: name,
       debugShowCheckedModeBanner: false,
@@ -34,6 +34,7 @@ class HomePageState extends State<HomePage> {
   int numberOfTries = 0;
   int numberOfTimes = 5;
 
+  // ignore: always_specify_types
   final guessedNumber = TextEditingController();
 
   static Random ran = Random();
@@ -50,7 +51,6 @@ class HomePageState extends State<HomePage> {
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -63,15 +63,11 @@ class HomePageState extends State<HomePage> {
                   child: Text(
                     'I\'m thinking of a number between 1 and 100. You only have 5 tries.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                        color: Colors.amber),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.amber),
                   ),
                 ),
               ),
               const Align(
-                alignment: Alignment.center,
                 child: Padding(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
@@ -104,13 +100,13 @@ class HomePageState extends State<HomePage> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.amber),
                   ),
+                  onPressed: guess,
                   child: const Text(
-                    "Guess",
+                    'Guess',
                     style: TextStyle(
                       fontSize: 16.0,
                     ),
                   ),
-                  onPressed: guess,
                 ),
               ),
             ],
@@ -121,35 +117,35 @@ class HomePageState extends State<HomePage> {
   }
 
   void guess() {
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    final invokeMethod = SystemChannels.textInput.invokeMethod<String>('TextInput.hide');
 
     if (isEmpty()) {
-      makeToast("You did not enter a number");
+      makeToast('You did not enter a number');
       return;
     }
 
-    int guess = int.parse(guessedNumber.text);
+    final int guess = int.parse(guessedNumber.text);
 
     if (guess > 100 || guess < 1) {
-      makeToast("Choose number between 1 and 100");
+      makeToast('Choose number between 1 and 100');
       guessedNumber.clear();
       return;
     }
 
     numberOfTries++;
     if (numberOfTries == numberOfTimes && guess != randomNumber) {
-      makeToast(
-          "Game Over! Your Number of Tries is: $numberOfTries My number is: $randomNumber");
+      makeToast('Game Over! Your Number of Tries is: $numberOfTries My number is: $randomNumber');
       numberOfTries = 0;
       randomNumber = ran.nextInt(20) + 1;
       guessedNumber.clear();
       return;
     }
+    
 
     if (guess > randomNumber) {
-      makeToast("Lower! Number of Tries is: $numberOfTries");
+      makeToast('Lower! Number of Tries is: $numberOfTries');
     } else if (guess < randomNumber) {
-      makeToast("Higher! Number of Tries is: $numberOfTries");
+      makeToast('Higher! Number of Tries is: $numberOfTries');
     } else {
       makeToast("That's right. You Win! Number of Tries is: $numberOfTries");
       numberOfTries = 0;
